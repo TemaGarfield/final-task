@@ -1,0 +1,64 @@
+<form 
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm"
+    novalidate
+>
+    <div class="form-group" *ngIf="isAdmin">
+        <label for="user">From user</label>
+        <select 
+            name="user"
+            class="form-control" 
+            [(ngModel)]="form.user"
+            required
+            #user="ngModel"
+        >
+            <option *ngFor="let user of users" [ngValue]="user">{{user.username}}</option>
+        </select>
+        <div class="alert-danger" *ngIf="user.errors && f.submitted">
+            <div *ngIf="user.errors['required']">User is required</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+            type="text"
+            [(ngModel)]="form.name"
+            value="{{form.name}}"
+            name="name"
+            class="form-control"
+            required
+            #name="ngModel"
+        >
+        <div class="alert-danger" *ngIf="name.errors && f.submitted">
+            <div *ngIf="name.errors['required']">Name is required</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="topic">Topic</label>
+        <select name="topic" [(ngModel)]="form.topic" class="form-control" required #topic="ngModel">
+            <option *ngFor="let topic of topics" [ngValue]="topic">{{topic.topic}}</option>
+        </select>
+        <div class="alert-danger" *ngIf="topic.errors && f.submitted">
+            <div *ngIf="topic.errors['required']">Topic is required</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea 
+            name="description"
+            [(ngModel)]="form.description"
+            class="form-control"
+            required
+            maxlength="255"
+            #description="ngModel"
+        ></textarea>
+        <div class="alert-danger" *ngIf="description.errors && f.submitted">
+            <div *ngIf="description.errors['required']">Description is required</div>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-block">Edit</button>
+</form>

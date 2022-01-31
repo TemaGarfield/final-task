@@ -1,0 +1,30 @@
+<h1>{{item.name}}</h1>
+<h3>Comments</h3>
+<div *ngFor="let comment of comments">
+        <p>From: {{comment.fromUser.username}}</p>
+        <p>Text: {{comment.message}}</p>   
+</div>
+<form
+    name="form"
+    (ngSubmit)="onSubmit()"
+    #f="ngForm"
+    novalidate
+    *ngIf="isAuthorized"
+>
+    <div class="form-group">
+        <input 
+            type="text" 
+            name="comment" 
+            placeholder="Comment Here!" 
+            class="form-control" 
+            required 
+            [(ngModel)]="form.comment"
+            maxlength="255"
+            #comment="ngModel"
+        >
+        <div class="alert-danger" *ngIf="comment.errors && f.submitted">
+            <div *ngIf="comment.errors['required']">Comment cannot be empty</div>
+        </div>
+    </div>
+    <button class="btn btn-primary">Comment</button>
+</form>

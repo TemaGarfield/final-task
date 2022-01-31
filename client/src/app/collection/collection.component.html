@@ -1,0 +1,43 @@
+<h1>{{collectionName}}</h1>
+<table class="table" *ngIf="!isEmpty">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th *ngIf="isAdmin || isCreator"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr scope="row" *ngFor="let item of collectionItems">
+            <td><a routerLink="/item" [queryParams]="{'itemId': item.id}" (click)="linkSetItem(item);" class="link-dark">{{item.name}}</a></td>
+            <th *ngIf="isAdmin || isCreator"><button class="btn btn-primary btn-block" (click)="deleteItem(item.id)">Delete</button></th>
+            <th *ngIf="isAdmin || isCreator"><button class="btn btn-primary btn-block" (click)="editItem(item)">Edit</button></th>
+        </tr>
+    </tbody>
+</table>
+<button *ngIf="!isShow && (isCreator || isAdmin)" class="btn btn-primary btn-block" (click)="show()">Add</button>
+<form 
+    *ngIf="isShow"
+    name="form"
+    (ngSubmit)="onSubmit()"
+    #f="ngForm"
+    novalidate
+>
+    <div class="form-group">
+        <label for="item-name">Name</label>
+        <input 
+            type="text"
+            class="form-control"
+            name="item-name"
+            [(ngModel)]="form.name"
+            required
+            maxlength="255"
+            #name="ngModel"
+        >
+        <div class="alert-danger" *ngIf="name.errors && f.submitted">
+            <div *ngIf="name.errors['required']">Name is required</div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-block">Add</button>
+    <button class="btn btn-danger btn-block" (click)="show()">Cancel</button>
+</form>

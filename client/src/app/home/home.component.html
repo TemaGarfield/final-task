@@ -1,0 +1,10 @@
+<h1>Last items</h1>
+<div *ngFor="let item of items">
+  <a routerLink="/item" [queryParams]="{'itemId': item.id}">{{item.name}}</a>
+</div>
+
+<h1>Collections</h1>
+<div *ngFor="let collection of collections">
+  <a routerLink="/user/collection-page" [queryParams]="{'collectionId': collection.id}">{{collection.name}}</a>
+</div>
+  

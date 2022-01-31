@@ -1,0 +1,97 @@
+<div class="container" *ngIf="errorMessage == ''; else errorBlock">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" (click)="sort('id', 0)">#</th>
+        <th scope="col" (click)="sort('name', 1)">Name</th>
+        <th scope="col" (click)="sort('topic', 2)">Topic</th>
+        <th scope="col" (click)="sort('description', 3)">Description</th>
+        <th scope="col" (click)="sort('user', 4)">Creator</th>
+        <th scope="col" *ngIf="isAdmin"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr scope="row" *ngFor = "let collection of collections">
+        <th>{{collection.id}}</th>
+        <td class="text-break"><a routerLink="/user/collection-page" [queryParams]="{'collectionId': collection.id}" class="link-dark" style="color: black">{{collection.name}}</a></td>
+        <td >{{collection.topic.topic}}</td>
+        <td class="text-break">{{collection.description}}</td>
+        <td>{{collection.user.username}}</td>
+        <td *ngIf="isAdmin"><button class="btn btn-primary" (click)="deleteCollection(collection.id)">Delete</button></td>
+        <td *ngIf="isAdmin"><button class="btn btn-primary" (click)="editCollection(collection)">Edit</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary" (click)="showForm()">{{buttonText}}</button>
+
+  <form 
+    *ngIf="show"
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit(f)"
+    #f="ngForm"
+    novalidate
+  >
+    <div class="form-group" *ngIf="isAdmin">
+      <label for="users">From user</label>
+      <select name="users" class="form-control" [(ngModel)]="form.userId" required>
+        <option *ngFor="let user of users" [ngValue]="user.id">{{user.username}}</option>
+      </select>
+
+      <div class="alert-danger" *ngIf="form.userId == null && f.submitted">User is required</div>
+    </div>
+
+    <div class="form-group">
+      <label for="collection_name">Name</label>
+      <input 
+        type="text"
+        class="form-control"
+        name="collection_name"
+        [(ngModel)]="form.name"
+        required
+        #name="ngModel"  
+      >
+      <div class="alert-danger" *ngIf="name.errors && f.submitted">
+        <div>Name is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="topics">Topic</label>
+      <select name="topics" class="form-control" [(ngModel)]="form.topic" required>
+        <option *ngFor="let topic of topics" [ngValue]="topic">{{topic.topic}}</option>
+      </select>
+      <div class="alert-danger" *ngIf="form.topic == null && f.submitted">
+        <div>Topic is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        class="form-control" 
+        name="description" 
+        cols="30" 
+        rows="10"
+        [(ngModel)]="form.description"
+        required
+        #description="ngModel"
+      ></textarea>
+      <div class="alert-danger" *ngIf="description.errors && f.submitted">
+        <div>Description is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-primary btm-block">Add</button>
+    </div>
+  </form>
+</div>
+
+  <ng-template #errorBlock>
+    <div class="container">
+      <p>{{errorMessage}}</p>
+    </div>
+  </ng-template>
+
+  

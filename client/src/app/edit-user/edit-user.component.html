@@ -1,0 +1,50 @@
+<div class="container" *ngIf="errorMessage == ''; else errorBlock">
+    <form
+        name="form"
+        (ngSubmit)="f.form.valid && onSubmit()"
+        #f="ngForm"
+        novalidate
+    >
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+                type="text"
+                [(ngModel)]="form.username"
+                value="{{form.username}}"
+                name="username"
+                class="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+                type="text"
+                [(ngModel)]="form.email"
+                value="{{form.email}}"
+                name="email"
+                class="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="text"
+                name="password"
+                class="form-control"
+                />
+        </div>
+        <div class="form-group" *ngFor="let role of roles; let i = index">
+            <input type="checkbox" name="checkbox" [checked]="role.checked" (change)="role.checked = !role.checked">
+            <label for="checkbox">{{role.name}}</label>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block">Edit</button>
+        </div>
+    </form>
+</div>
+
+<ng-template #errorBlock>
+    <div class="container">
+      <p>{{errorMessage}}</p>
+    </div>
+  </ng-template>

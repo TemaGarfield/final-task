@@ -1,0 +1,87 @@
+<div class="container" *ngIf="errorMessage == ''; else errorBlock">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" (click)="sort('id', 0)" style="cursor: pointer;">#</th>
+        <th scope="col" (click)="sort('name', 1)" style="cursor: pointer;">Name</th>
+        <th scope="col" (click)="sort('topic', 2)" style="cursor: pointer;">Topic</th>
+        <th scope="col" (click)="sort('description', 3)" style="cursor: pointer;">Description</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr  *ngFor="let collection of collections">
+          <th scope="row">{{collection.id}}</th>
+          <td><a routerLink="/user/collection-page" [queryParams]="{'collectionId': collection.id}" class="link-dark" style="color: black">{{collection.name}}</a></td>
+          <td >{{collection.topic.topic}}</td>
+          <td class="text-break">{{collection.description}}</td>
+          <td><button class="btn btn-primary btn-block" (click)="deleteCollection(collection.id)">Delete</button></td>
+          <td><button class="btn btn-primary btn-block" (click)="editCollection(collection)">Edit</button></td>
+        </tr>
+    </tbody>
+  </table>
+
+  <button class="btn btn-primary" (click)="showForm()">{{buttonText}}</button>
+
+  <form 
+    *ngIf="show"
+    name="form"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm"
+    novalidate
+  >
+    <div class="form-group">
+      <label for="collection_name">Name</label>
+      <input 
+        type="text"
+        class="form-control"
+        name="collection_name"
+        [(ngModel)]="form.name"
+        required
+        #name="ngModel"
+        maxlength="255"  
+      >
+      <div class="alert-danger" *ngIf="name.errors && f.submitted">
+        <div *ngIf="name.errors['required']">Name is required</div>
+        <div *ngIf="name.errors['maxlength']">Name length error</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="topics">Topic</label>
+      <select name="topics" class="form-control" [(ngModel)]="form.topic" required>
+        <option *ngFor="let topic of topics" [ngValue]="topic">{{topic.topic}}</option>
+      </select>
+      <div class="alert-danger" *ngIf="form.topic == null && f.submitted">
+        <div>Topic is required</div>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        class="form-control" 
+        name="description" 
+        cols="30" 
+        rows="10"
+        [(ngModel)]="form.description"
+        required
+        #description="ngModel"
+        maxlength="255"
+      ></textarea>
+      <div class="alert-danger" *ngIf="description.errors && f.submitted">
+        <div>Description is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-primary btn-block">Add</button>
+    </div>
+  </form>
+</div>
+<ng-template #errorBlock>
+  <div class="container">
+    <p>{{errorMessage}}</p>
+  </div>
+</ng-template>

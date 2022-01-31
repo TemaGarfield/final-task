@@ -1,0 +1,17 @@
+<h1>Edit item</h1>
+<form
+    name="form"
+    (ngSubmit)="onSubmit()"
+    #f="ngForm"
+    novalidate
+>
+    <div class="form-group">
+        <label for="item-name">Name</label>
+        <input type="text" class="form-control" name="item-name" [(ngModel)]="form.name" required maxlength="255" #name="ngModel">
+        <div class="alert-danger" *ngIf="name.errors && f.submitted">
+            <div *ngIf="name.errors['required']">Name is required</div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-block">Edit</button>
+</form>

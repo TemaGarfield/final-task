@@ -1,0 +1,30 @@
+  <div class="container" *ngIf="errorMessage == ''; else errorBlock">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr scope="row" *ngFor = "let user of users; let i = index">
+          <th>{{user.id}}</th>
+          <th>{{user.username}}</th>
+          <th>{{user.email}}</th>
+          <th><button class="btn btn-primary" (click)="deleteUser(user.id)">Delete</button></th>
+          <th><button class="btn btn-primary" (click)="editUser(user)">Edit</button></th>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn btn-primary" (click)="addUser()">Add</button>
+  </div>
+
+  <ng-template #errorBlock>
+    <div class="container">
+      <p>{{errorMessage}}</p>
+    </div>
+  </ng-template>
+  
